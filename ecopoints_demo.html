@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoPoints – Waste into Wealth</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-fresh: #52b788;
+    --green-light: #95d5b2;
+    --gold: #f4a261;
+    --gold-light: #fde8d0;
+    --cream: #f8f5ee;
+    --bark: #3d2b1f;
+    --white: #ffffff;
+    --grey-soft: #e8e8e0;
+    --text-main: #1a1a1a;
+    --text-muted: #6b7468;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--cream);
+    color: var(--text-main);
+    min-height: 100vh;
+  }
+
+  /* ─── LANDING ─── */
+  #landing {
+    min-height: 100vh;
+    background: var(--green-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #landing::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(82,183,136,0.15) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .leaf-bg {
+    position: absolute;
+    font-size: 180px;
+    opacity: 0.04;
+    bottom: -20px; left: -20px;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .logo-mark {
+    width: 72px; height: 72px;
+    background: var(--green-fresh);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 0 40px rgba(82,183,136,0.4);
+  }
+
+  .landing-title {
+    font-size: clamp(42px, 8vw, 80px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -2px;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .landing-title span {
+    color: var(--green-fresh);
+  }
+
+  .landing-sub {
+    font-size: 18px;
+    color: var(--green-light);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .tagline-pill {
+    background: rgba(82,183,136,0.15);
+    border: 1px solid rgba(82,183,136,0.3);
+    color: var(--green-light);
+    padding: 6px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+    text-transform: uppercase;
+  }
+
+  .landing-stats {
+    display: flex;
+    gap: 48px;
+    margin-bottom: 56px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--green-light);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .portal-cards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .portal-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 32px 28px;
+    width: 240px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+
+  .portal-card:hover {
+    background: rgba(82,183,136,0.15);
+    border-color: var(--green-fresh);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  }
+
+  .portal-icon { font-size: 40px; margin-bottom: 16px; }
+
+  .portal-card h3 {
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .portal-card p {
+    color: var(--green-light);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .portal-btn {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 20px;
+    background: var(--green-fresh);
+    color: var(--green-deep);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ─── SHARED LAYOUT ─── */
+  .app-view { display: none; min-height: 100vh; flex-direction: column; }
+  .app-view.active { display: flex; }
+
+  .topbar {
+    background: var(--green-deep);
+    color: var(--white);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+
+  .back-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--white);
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.2); }
+
+  .topbar-title { font-size: 16px; font-weight: 600; flex: 1; }
+  .topbar-badge {
+    background: var(--green-fresh);
+    color: var(--green-deep);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .content { flex: 1; padding: 24px; max-width: 900px; margin: 0 auto; width: 100%; }
+
+  /* ─── RESIDENT APP ─── */
+  .user-hero {
+    background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+    border-radius: 24px;
+    padding: 28px;
+    color: var(--white);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .user-hero::after {
+    content: '♻';
+    position: absolute;
+    font-size: 120px;
+    right: -10px; bottom: -20px;
+    opacity: 0.08;
+    line-height: 1;
+  }
+
+  .user-greeting { font-size: 13px; color: var(--green-light); font-family: 'DM Mono', monospace; margin-bottom: 4px; }
+  .user-name { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+
+  .points-display {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .points-num {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .points-label { font-size: 14px; color: var(--green-light); padding-bottom: 10px; }
+
+  .points-sub { font-size: 13px; color: var(--green-light); margin-bottom: 24px; }
+
+  .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--bark);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-primary:hover { background: #f5b47a; transform: translateY(-1px); }
+
+  .btn-outline {
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.18); }
+
+  .section-label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--grey-soft);
+  }
+
+  .cards-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
+
+  .mini-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 18px 16px;
+    border: 1px solid var(--grey-soft);
+    transition: box-shadow 0.2s;
+  }
+  .mini-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+  .mini-card-icon { font-size: 24px; margin-bottom: 8px; }
+  .mini-card-num { font-size: 22px; font-weight: 700; color: var(--green-mid); }
+  .mini-card-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* QR Scanner simulation */
+  .qr-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .qr-modal.open { display: flex; }
+
+  .qr-box {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 32px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+
+  .qr-frame {
+    width: 200px; height: 200px;
+    border: 3px solid var(--green-fresh);
+    border-radius: 16px;
+    margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    background: #f0faf5;
+    overflow: hidden;
+  }
+
+  .qr-scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--green-fresh);
+    animation: scan 2s linear infinite;
+    box-shadow: 0 0 8px var(--green-fresh);
+  }
+
+  @keyframes scan {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+
+  .qr-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 3px;
+    padding: 12px;
+    opacity: 0.3;
+  }
+
+  .qr-dot {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--green-deep);
+    border-radius: 2px;
+  }
+
+  .qr-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .qr-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+
+  .deposit-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .deposit-type {
+    border: 2px solid var(--grey-soft);
+    border-radius: 12px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .deposit-type:hover, .deposit-type.selected {
+    border-color: var(--green-fresh);
+    background: #f0faf5;
+    color: var(--green-mid);
+  }
+
+  .weight-input {
+    display: flex; align-items: center; gap: 12px; justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .weight-btn {
+    width: 36px; height: 36px;
+    border: 2px solid var(--green-fresh);
+    background: none;
+    border-radius: 10px;
+    font-size: 20px;
+    color: var(--green-mid);
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .weight-num {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--green-deep);
+    min-width: 60px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .weight-unit { font-size: 14px; color: var(--text-muted); }
+
+  .points-preview {
+    background: var(--gold-light);
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: var(--bark);
+    font-weight: 600;
+  }
+
+  .btn-confirm {
+    width: 100%;
+    background: var(--green-mid);
+    color: var(--white);
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 10px;
+  }
+  .btn-confirm:hover { background: var(--green-deep); }
+
+  .btn-cancel {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    padding: 6px;
+  }
+
+  /* Success toast */
+  .toast {
+    display: none;
+    position: fixed;
+    bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--green-deep);
+    color: var(--white);
+    padding: 14px 24px;
+    border-radius: 16px;
+    z-index: 300;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    min-width: 280px;
+    border-left: 4px solid var(--green-fresh);
+  }
+  .toast.show { display: block; animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+  /* Rewards */
+  .rewards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+
+  .reward-card {
+    background: var(--white);
+    border: 1px solid var(--grey-soft);
+    border-radius: 16px;
+    padding: 20px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reward-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 20px rgba(244,162,97,0.15);
+    transform: translateY(-2px);
+  }
+  .reward-icon { font-size: 32px; margin-bottom: 10px; }
+  .reward-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .reward-cost {
+    font-size: 12px;
+    color: var(--green-mid);
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+  }
+  .reward-cost span { color: var(--gold); font-weight: 700; }
+
+  /* History */
+  .history-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+
+  .history-item {
+    background: var(--white);
+    border: 1px solid var(--grey-soft);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .history-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .history-icon.earn { background: #e8f5ee; }
+  .history-icon.redeem { background: #fff3e8; }
+
+  .history-text { flex: 1; }
+  .history-title { font-size: 14px; font-weight: 600; }
+  .history-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .history-pts {
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+  }
+  .history-pts.earn { color: var(--green-mid); }
+  .history-pts.redeem { color: var(--gold); }
+
+  /* Leaderboard */
+  .leaderboard { background: var(--white); border-radius: 20px; border: 1px solid var(--grey-soft); overflow: hidden; margin-bottom: 28px; }
+
+  .lb-header {
+    background: var(--green-deep);
+    color: var(--white);
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .lb-title { font-size: 15px; font-weight: 700; }
+  .lb-tab {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--green-light);
+  }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--grey-soft);
+    transition: background 0.15s;
+  }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: #f8faf8; }
+  .lb-row.highlight { background: #f0faf5; }
+
+  .lb-rank {
+    font-size: 16px;
+    font-weight: 700;
+    width: 28px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+  }
+  .lb-rank.gold { color: #f4a261; }
+  .lb-rank.silver { color: #888; }
+  .lb-rank.bronze { color: #c87533; }
+
+  .lb-avatar {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .lb-name { flex: 1; font-size: 14px; font-weight: 600; }
+  .lb-sub { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+
+  .lb-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green-mid);
+  }
+
+  /* ─── ADMIN DASHBOARD ─── */
+  .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 28px; }
+
+  .admin-stat {
+    background: var(--white);
+    border: 1px solid var(--grey-soft);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .admin-stat::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .admin-stat.green::before { background: var(--green-fresh); }
+  .admin-stat.gold::before { background: var(--gold); }
+  .admin-stat.blue::before { background: #74b9ff; }
+  .admin-stat.red::before { background: #e17055; }
+
+  .admin-stat-icon { font-size: 22px; margin-bottom: 10px; }
+  .admin-stat-num { font-size: 30px; font-weight: 700; color: var(--green-deep); line-height: 1; }
+  .admin-stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .admin-stat-trend { font-size: 11px; color: var(--green-fresh); font-family: 'DM Mono', monospace; margin-top: 6px; }
+
+  /* Chart */
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--grey-soft);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .chart-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .chart-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 140px; }
+
+  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+
+  .bar {
+    width: 100%;
+    border-radius: 6px 6px 0 0;
+    transition: opacity 0.2s;
+    cursor: pointer;
+    min-height: 4px;
+  }
+  .bar:hover { opacity: 0.8; }
+
+  .bar-label { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+  .bar-val { font-size: 11px; font-weight: 600; color: var(--green-mid); }
+
+  /* Collection table */
+  .table-card {
+    background: var(--white);
+    border: 1px solid var(--grey-soft);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .table-head {
+    background: var(--cream);
+    padding: 14px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 80px;
+    gap: 10px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--grey-soft);
+  }
+
+  .table-row {
+    padding: 14px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 80px;
+    gap: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--grey-soft);
+    align-items: center;
+    transition: background 0.15s;
+  }
+  .table-row:last-child { border-bottom: none; }
+  .table-row:hover { background: #f8faf8; }
+
+  .status-pill {
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    display: inline-block;
+  }
+  .status-pill.active { background: #e8f5ee; color: var(--green-mid); }
+  .status-pill.pending { background: #fff3e8; color: #c87533; }
+  .status-pill.full { background: #ffe8e8; color: #c0392b; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--grey-soft);
+    padding: 4px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    width: fit-content;
+  }
+
+  .tab {
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-muted);
+  }
+
+  .tab.active {
+    background: var(--white);
+    color: var(--green-deep);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  /* Tab content */
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* School leaderboard admin */
+  .school-lb { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+  .school-row {
+    background: var(--white);
+    border: 1px solid var(--grey-soft);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.2s;
+  }
+  .school-row:hover { border-color: var(--green-light); }
+
+  .school-rank-badge {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: var(--green-deep);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .school-info { flex: 1; }
+  .school-name { font-size: 14px; font-weight: 700; }
+  .school-location { font-size: 12px; color: var(--text-muted); }
+
+  .school-bar-wrap { width: 140px; }
+  .school-bar-bg { height: 6px; background: var(--grey-soft); border-radius: 100px; overflow: hidden; }
+  .school-bar-fill { height: 100%; border-radius: 100px; background: var(--green-fresh); }
+
+  .school-score { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 700; color: var(--green-mid); min-width: 60px; text-align: right; }
+
+  /* Community projects */
+  .project-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 20px; }
+
+  .project-card {
+    background: var(--white);
+    border: 1px solid var(--grey-soft);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
+  .project-card:hover { border-color: var(--green-light); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
+  .project-icon { font-size: 28px; margin-bottom: 12px; }
+  .project-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .project-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
+
+  .project-progress { margin-bottom: 10px; }
+  .progress-bar-bg { height: 8px; background: var(--grey-soft); border-radius: 100px; overflow: hidden; margin-bottom: 6px; }
+  .progress-bar-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--green-fresh), var(--green-light)); }
+  .progress-text { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; justify-content: space-between; }
+
+  .project-contributors { font-size: 12px; color: var(--text-muted); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .table-head, .table-row { grid-template-columns: 1fr 1fr 80px; }
+    .table-head > *:nth-child(3), .table-row > *:nth-child(3),
+    .table-head > *:nth-child(4), .table-row > *:nth-child(4) { display: none; }
+    .admin-grid { grid-template-columns: 1fr 1fr; }
+    .school-bar-wrap { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── LANDING ─── -->
+<div id="landing">
+  <div class="leaf-bg">🌿</div>
+  <div class="logo-mark">♻️</div>
+  <div class="tagline-pill">SPE Nigeria × Kenyon Group · World Environment Day</div>
+  <h1 class="landing-title">Eco<span>Points</span></h1>
+  <p class="landing-sub">Waste into Wealth. Action into Lifestyle.</p>
+
+  <div class="landing-stats">
+    <div class="stat-item">
+      <span class="stat-num" id="counter-kg">0</span>
+      <div class="stat-label">KG Recycled</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="counter-users">0</span>
+      <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="counter-pts">0</span>
+      <div class="stat-label">Points Earned</div>
+    </div>
+  </div>
+
+  <div class="portal-cards">
+    <div class="portal-card" onclick="showView('resident')">
+      <div class="portal-icon">📱</div>
+      <h3>Resident App</h3>
+      <p>Scan QR at collection hubs, earn EcoPoints, redeem rewards</p>
+      <div class="portal-btn">Open App →</div>
+    </div>
+    <div class="portal-card" onclick="showView('admin')">
+      <div class="portal-icon">🏗️</div>
+      <h3>Hub Dashboard</h3>
+      <p>Track collections, manage hubs, view leaderboards & community projects</p>
+      <div class="portal-btn">Open Dashboard →</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── RESIDENT APP ─── -->
+<div id="resident" class="app-view">
+  <div class="topbar">
+    <button class="back-btn" onclick="showView('landing')">←</button>
+    <span class="topbar-title">EcoPoints — Resident App</span>
+    <span class="topbar-badge">📱 DEMO</span>
+  </div>
+
+  <div class="content">
+    <!-- Hero -->
+    <div class="user-hero">
+      <div class="user-greeting">Good morning,</div>
+      <div class="user-name">Adaeze Okonkwo 🌿</div>
+      <div class="points-display">
+        <span class="points-num" id="user-points">1,240</span>
+        <span class="points-label">EcoPoints</span>
+      </div>
+      <div class="points-sub">≈ ₦620 value · Rank #3 in Warri North</div>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openQR()">📷 Scan & Deposit</button>
+        <button class="btn-outline" onclick="showTab('rewards-tab')">🎁 Redeem</button>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="section-label">Your Impact</div>
+    <div class="cards-row">
+      <div class="mini-card">
+        <div class="mini-card-icon">♻️</div>
+        <div class="mini-card-num">38.5</div>
+        <div class="mini-card-label">KG recycled</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">🌳</div>
+        <div class="mini-card-num">4</div>
+        <div class="mini-card-label">Trees saved equiv.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">🔥</div>
+        <div class="mini-card-num">12</div>
+        <div class="mini-card-label">Day streak</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">🏆</div>
+        <div class="mini-card-num">#3</div>
+        <div class="mini-card-label">Neighbourhood rank</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('activity-tab', this)">Activity</button>
+      <button class="tab" onclick="showTab('rewards-tab', this)">Rewards</button>
+      <button class="tab" onclick="showTab('leaderboard-tab', this)">EcoScore</button>
+    </div>
+
+    <!-- Activity Tab -->
+    <div id="activity-tab" class="tab-pane active">
+      <div class="section-label">Recent Transactions</div>
+      <div class="history-list" id="history-list">
+        <div class="history-item">
+          <div class="history-icon earn">♻️</div>
+          <div class="history-text">
+            <div class="history-title">Plastic bottles — 2.5 kg</div>
+            <div class="history-date">Today · Hub A, Warri</div>
+          </div>
+          <div class="history-pts earn">+125 pts</div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon redeem">🎁</div>
+          <div class="history-text">
+            <div class="history-title">Airtime — MTN ₦500</div>
+            <div class="history-date">Yesterday</div>
+          </div>
+          <div class="history-pts redeem">−200 pts</div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon earn">📦</div>
+          <div class="history-text">
+            <div class="history-title">Cardboard — 4 kg</div>
+            <div class="history-date">Jun 24</div>
+          </div>
+          <div class="history-pts earn">+160 pts</div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon earn">🥫</div>
+          <div class="history-text">
+            <div class="history-title">Metal cans — 1.8 kg</div>
+            <div class="history-date">Jun 22</div>
+          </div>
+          <div class="history-pts earn">+108 pts</div>
+        </div>
+        <div class="history-item">
+          <div class="history-icon redeem">📚</div>
+          <div class="history-text">
+            <div class="history-title">School supplies bundle</div>
+            <div class="history-date">Jun 20</div>
+          </div>
+          <div class="history-pts redeem">−300 pts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rewards Tab -->
+    <div id="rewards-tab" class="tab-pane">
+      <div class="section-label">Redeem Your Points</div>
+      <div class="rewards-grid">
+        <div class="reward-card" onclick="redeemReward('Airtime ₦500', 200)">
+          <div class="reward-icon">📱</div>
+          <div class="reward-name">MTN Airtime ₦500</div>
+          <div class="reward-cost"><span>200</span> pts</div>
+        </div>
+        <div class="reward-card" onclick="redeemReward('Airtime ₦1000', 380)">
+          <div class="reward-icon">📞</div>
+          <div class="reward-name">Airtel Airtime ₦1,000</div>
+          <div class="reward-cost"><span>380</span> pts</div>
+        </div>
+        <div class="reward-card" onclick="redeemReward('School Supplies Bundle', 300)">
+          <div class="reward-icon">📚</div>
+          <div class="reward-name">School Supplies</div>
+          <div class="reward-cost"><span>300</span> pts</div>
+        </div>
+        <div class="reward-card" onclick="redeemReward('Transport Voucher ₦500', 180)">
+          <div class="reward-icon">🚌</div>
+          <div class="reward-name">Transport Voucher</div>
+          <div class="reward-cost"><span>180</span> pts</div>
+        </div>
+        <div class="reward-card" onclick="redeemReward('Community Fund Donation', 100)">
+          <div class="reward-icon">🌍</div>
+          <div class="reward-name">Pool to Community Fund</div>
+          <div class="reward-cost"><span>100</span> pts</div>
+        </div>
+        <div class="reward-card" onclick="redeemReward('Food Market Voucher', 500)">
+          <div class="reward-icon">🛒</div>
+          <div class="reward-name">Market Voucher ₦2,000</div>
+          <div class="reward-cost"><span>500</span> pts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Tab -->
+    <div id="leaderboard-tab" class="tab-pane">
+      <div class="section-label">Neighbourhood EcoScore</div>
+      <div class="leaderboard">
+        <div class="lb-header">
+          <span class="lb-title">🏆 Warri North Rankings</span>
+          <span class="lb-tab">JUNE 2026</span>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank gold">🥇</div>
+          <div class="lb-avatar">👩</div>
+          <div class="lb-name">Chioma Nwachukwu <div class="lb-sub">Ekpan Estate</div></div>
+          <div class="lb-score">2,840 pts</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank silver">🥈</div>
+          <div class="lb-avatar">👨</div>
+          <div class="lb-name">Emeka Obi <div class="lb-sub">GRA Phase 2</div></div>
+          <div class="lb-score">1,990 pts</div>
+        </div>
+        <div class="lb-row highlight">
+          <div class="lb-rank bronze">🥉</div>
+          <div class="lb-avatar">👩</div>
+          <div class="lb-name">Adaeze Okonkwo <div class="lb-sub" style="color:var(--green-fresh)">You · Effurun</div></div>
+          <div class="lb-score">1,240 pts</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank">4</div>
+          <div class="lb-avatar">👦</div>
+          <div class="lb-name">Tunde Adebayo <div class="lb-sub">Refinery Road</div></div>
+          <div class="lb-score">980 pts</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank">5</div>
+          <div class="lb-avatar">👩</div>
+          <div class="lb-name">Ngozi Eze <div class="lb-sub">Okuokoko</div></div>
+          <div class="lb-score">870 pts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ADMIN DASHBOARD ─── -->
+<div id="admin" class="app-view">
+  <div class="topbar">
+    <button class="back-btn" onclick="showView('landing')">←</button>
+    <span class="topbar-title">EcoPoints — Hub Dashboard</span>
+    <span class="topbar-badge">🏗️ ADMIN</span>
+  </div>
+
+  <div class="content">
+    <!-- Stats Row -->
+    <div class="admin-grid">
+      <div class="admin-stat green">
+        <div class="admin-stat-icon">⚖️</div>
+        <div class="admin-stat-num">4,820</div>
+        <div class="admin-stat-label">KG collected this month</div>
+        <div class="admin-stat-trend">↑ 18% vs last month</div>
+      </div>
+      <div class="admin-stat gold">
+        <div class="admin-stat-icon">👥</div>
+        <div class="admin-stat-num">1,342</div>
+        <div class="admin-stat-label">Registered residents</div>
+        <div class="admin-stat-trend">↑ 94 new this week</div>
+      </div>
+      <div class="admin-stat blue">
+        <div class="admin-stat-icon">🏪</div>
+        <div class="admin-stat-num">8</div>
+        <div class="admin-stat-label">Active collection hubs</div>
+        <div class="admin-stat-trend">2 hubs near capacity</div>
+      </div>
+      <div class="admin-stat red">
+        <div class="admin-stat-icon">🎁</div>
+        <div class="admin-stat-num">241,600</div>
+        <div class="admin-stat-label">EcoPoints issued</div>
+        <div class="admin-stat-trend">₦120,800 equiv. value</div>
+      </div>
+    </div>
+
+    <!-- Dashboard Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="showAdminTab('overview-tab', this)">Overview</button>
+      <button class="tab" onclick="showAdminTab('hubs-tab', this)">Hubs</button>
+      <button class="tab" onclick="showAdminTab('schools-tab', this)">EcoScore</button>
+      <button class="tab" onclick="showAdminTab('projects-tab', this)">Community</button>
+    </div>
+
+    <!-- Overview Tab -->
+    <div id="overview-tab" class="tab-pane active">
+      <div class="chart-card">
+        <div class="chart-title">Weekly Collection Volume</div>
+        <div class="chart-sub">Kilograms recycled per day — Warri North Zone</div>
+        <div class="bar-chart">
+          <div class="bar-wrap">
+            <div class="bar-val">320</div>
+            <div class="bar" style="height:55%;background:var(--green-light)"></div>
+            <div class="bar-label">Mon</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val">480</div>
+            <div class="bar" style="height:82%;background:var(--green-fresh)"></div>
+            <div class="bar-label">Tue</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val">390</div>
+            <div class="bar" style="height:67%;background:var(--green-light)"></div>
+            <div class="bar-label">Wed</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val">520</div>
+            <div class="bar" style="height:89%;background:var(--green-fresh)"></div>
+            <div class="bar-label">Thu</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val">580</div>
+            <div class="bar" style="height:100%;background:var(--green-mid)"></div>
+            <div class="bar-label">Fri</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val">410</div>
+            <div class="bar" style="height:71%;background:var(--green-light)"></div>
+            <div class="bar-label">Sat</div>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-val">180</div>
+            <div class="bar" style="height:31%;background:#d8f3dc)"></div>
+            <div class="bar-label">Sun</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Waste Category Breakdown</div>
+        <div class="chart-sub">This month's total: 4,820 KG across all hubs</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>🥤 Plastic</span><span style="font-weight:700;font-family:'DM Mono',monospace;color:var(--green-mid)">41%</span></div>
+              <div style="height:8px;background:var(--grey-soft);border-radius:100px;overflow:hidden"><div style="width:41%;height:100%;background:var(--green-fresh);border-radius:100px"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>📦 Paper/Cardboard</span><span style="font-weight:700;font-family:'DM Mono',monospace;color:var(--green-mid)">28%</span></div>
+              <div style="height:8px;background:var(--grey-soft);border-radius:100px;overflow:hidden"><div style="width:28%;height:100%;background:#95d5b2;border-radius:100px"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>🥫 Metal</span><span style="font-weight:700;font-family:'DM Mono',monospace;color:var(--green-mid)">18%</span></div>
+              <div style="height:8px;background:var(--grey-soft);border-radius:100px;overflow:hidden"><div style="width:18%;height:100%;background:var(--gold);border-radius:100px"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>🍶 Glass</span><span style="font-weight:700;font-family:'DM Mono',monospace;color:var(--green-mid)">13%</span></div>
+              <div style="height:8px;background:var(--grey-soft);border-radius:100px;overflow:hidden"><div style="width:13%;height:100%;background:#74b9ff;border-radius:100px"></div></div>
+            </div>
+          </div>
+          <div style="background:var(--green-deep);border-radius:14px;padding:18px;color:var(--white);display:flex;flex-direction:column;justify-content:space-between">
+            <div style="font-size:12px;color:var(--green-light);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">CO₂ Saved</div>
+            <div style="font-size:38px;font-weight:700;color:var(--green-fresh);line-height:1">9.64<span style="font-size:16px;color:var(--green-light);font-weight:400"> tonnes</span></div>
+            <div style="font-size:12px;color:var(--green-light);margin-top:8px">Equivalent to planting 482 trees this month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hubs Tab -->
+    <div id="hubs-tab" class="tab-pane">
+      <div class="table-card">
+        <div class="table-head">
+          <span>Hub Name</span>
+          <span>Location</span>
+          <span>Today (KG)</span>
+          <span>Capacity</span>
+          <span>Status</span>
+        </div>
+        <div class="table-row">
+          <span style="font-weight:600">Hub A — Central</span>
+          <span>Warri Market</span>
+          <span>142 kg</span>
+          <span>78%</span>
+          <span><span class="status-pill active">Active</span></span>
+        </div>
+        <div class="table-row">
+          <span style="font-weight:600">Hub B — GRA</span>
+          <span>GRA Phase 2</span>
+          <span>98 kg</span>
+          <span>54%</span>
+          <span><span class="status-pill active">Active</span></span>
+        </div>
+        <div class="table-row">
+          <span style="font-weight:600">Hub C — Effurun</span>
+          <span>Effurun Roundabout</span>
+          <span>201 kg</span>
+          <span>91%</span>
+          <span><span class="status-pill full">Near Full</span></span>
+        </div>
+        <div class="table-row">
+          <span style="font-weight:600">Hub D — FUPRE</span>
+          <span>FUPRE Campus</span>
+          <span>76 kg</span>
+          <span>42%</span>
+          <span><span class="status-pill active">Active</span></span>
+        </div>
+        <div class="table-row">
+          <span style="font-weight:600">Hub E — Okuokoko</span>
+          <span>Okuokoko Road</span>
+          <span>0 kg</span>
+          <span>—</span>
+          <span><span class="status-pill pending">Pickup Due</span></span>
+        </div>
+        <div class="table-row">
+          <span style="font-weight:600">Hub F — Refinery Rd</span>
+          <span>Refinery Road</span>
+          <span>88 kg</span>
+          <span>49%</span>
+          <span><span class="status-pill active">Active</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schools Tab -->
+    <div id="schools-tab" class="tab-pane">
+      <div class="section-label">School EcoScore Leaderboard</div>
+      <div class="school-lb">
+        <div class="school-row">
+          <div class="school-rank-badge" style="background:#f4a261">1</div>
+          <div class="school-info">
+            <div class="school-name">Government Secondary School, Warri</div>
+            <div class="school-location">480 participating students</div>
+          </div>
+          <div class="school-bar-wrap">
+            <div class="school-bar-bg"><div class="school-bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="school-score">94,200</div>
+        </div>
+        <div class="school-row">
+          <div class="school-rank-badge" style="background:#888">2</div>
+          <div class="school-info">
+            <div class="school-name">FUPRE International School</div>
+            <div class="school-location">312 participating students</div>
+          </div>
+          <div class="school-bar-wrap">
+            <div class="school-bar-bg"><div class="school-bar-fill" style="width:80%"></div></div>
+          </div>
+          <div class="school-score">75,400</div>
+        </div>
+        <div class="school-row">
+          <div class="school-rank-badge" style="background:#c87533">3</div>
+          <div class="school-info">
+            <div class="school-name">Effurun Grammar School</div>
+            <div class="school-location">267 participating students</div>
+          </div>
+          <div class="school-bar-wrap">
+            <div class="school-bar-bg"><div class="school-bar-fill" style="width:62%"></div></div>
+          </div>
+          <div class="school-score">58,100</div>
+        </div>
+        <div class="school-row">
+          <div class="school-rank-badge">4</div>
+          <div class="school-info">
+            <div class="school-name">Okumagba Government School</div>
+            <div class="school-location">198 participating students</div>
+          </div>
+          <div class="school-bar-wrap">
+            <div class="school-bar-bg"><div class="school-bar-fill" style="width:44%"></div></div>
+          </div>
+          <div class="school-score">41,800</div>
+        </div>
+        <div class="school-row">
+          <div class="school-rank-badge">5</div>
+          <div class="school-info">
+            <div class="school-name">Refinery Road Primary School</div>
+            <div class="school-location">144 participating students</div>
+          </div>
+          <div class="school-bar-wrap">
+            <div class="school-bar-bg"><div class="school-bar-fill" style="width:29%"></div></div>
+          </div>
+          <div class="school-score">27,300</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Community Projects Tab -->
+    <div id="projects-tab" class="tab-pane">
+      <div class="section-label">Community Pooled Projects</div>
+      <div class="project-cards">
+        <div class="project-card">
+          <div class="project-icon">💧</div>
+          <div class="project-name">Borehole for Okuokoko</div>
+          <div class="project-desc">Clean water access for 3 streets in Okuokoko funded entirely by pooled EcoPoints</div>
+          <div class="project-progress">
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:78%"></div></div>
+            <div class="progress-text"><span>78% funded</span><span>156,000 / 200,000 pts</span></div>
+          </div>
+          <div class="project-contributors">👥 342 contributors</div>
+        </div>
+        <div class="project-card">
+          <div class="project-icon">💡</div>
+          <div class="project-name">Street Lighting — GRA</div>
+          <div class="project-desc">Solar-powered streetlights for 5 blocks in GRA Phase 2, co-funded by residents</div>
+          <div class="project-progress">
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:45%"></div></div>
+            <div class="progress-text"><span>45% funded</span><span>90,000 / 200,000 pts</span></div>
+          </div>
+          <div class="project-contributors">👥 198 contributors</div>
+        </div>
+        <div class="project-card">
+          <div class="project-icon">🌳</div>
+          <div class="project-name">Green Park — Effurun</div>
+          <div class="project-desc">Planting 200 trees along Effurun-Sapele Road in collaboration with local council</div>
+          <div class="project-progress">
+            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:100%"></div></div>
+            <div class="progress-text"><span>Completed ✅</span><span>100,000 / 100,000 pts</span></div>
+          </div>
+          <div class="project-contributors">👥 511 contributors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QR Modal -->
+<div class="qr-modal" id="qr-modal">
+  <div class="qr-box">
+    <h2 class="qr-title">📷 Deposit & Earn</h2>
+    <p class="qr-sub">Select waste type and weight, then confirm at the hub scanner</p>
+
+    <div class="deposit-types">
+      <div class="deposit-type selected" onclick="selectType(this, '🥤 Plastic', 50)">
+        <span>🥤</span> Plastic
+      </div>
+      <div class="deposit-type" onclick="selectType(this, '📦 Paper', 40)">
+        <span>📦</span> Paper
+      </div>
+      <div class="deposit-type" onclick="selectType(this, '🥫 Metal', 60)">
+        <span>🥫</span> Metal
+      </div>
+      <div class="deposit-type" onclick="selectType(this, '🍶 Glass', 35)">
+        <span>🍶</span> Glass
+      </div>
+    </div>
+
+    <div class="qr-frame">
+      <div class="qr-scan-line"></div>
+      <div class="qr-grid" id="qr-grid"></div>
+    </div>
+
+    <div class="weight-input">
+      <button class="weight-btn" onclick="changeWeight(-1)">−</button>
+      <span class="weight-num" id="weight-display">2</span>
+      <span class="weight-unit">kg</span>
+      <button class="weight-btn" onclick="changeWeight(1)">+</button>
+    </div>
+
+    <div class="points-preview" id="points-preview">
+      🌿 This deposit earns you <strong>100 EcoPoints</strong>
+    </div>
+
+    <button class="btn-confirm" onclick="confirmDeposit()">✅ Confirm Deposit</button>
+    <button class="btn-cancel" onclick="closeQR()">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // State
+  let currentPoints = 1240;
+  let depositWeight = 2;
+  let selectedRate = 50;
+  let selectedTypeName = '🥤 Plastic';
+
+  // Landing counter animation
+  function animateCounter(id, target, duration = 1800, suffix = '') {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { start = target; clearInterval(timer); }
+      el.textContent = Math.floor(start).toLocaleString() + suffix;
+    }, 16);
+  }
+
+  window.addEventListener('load', () => {
+    animateCounter('counter-kg', 4820);
+    animateCounter('counter-users', 1342);
+    animateCounter('counter-pts', 241600);
+    generateQR();
+  });
+
+  // Navigation
+  function showView(id) {
+    document.getElementById('landing').style.display = id === 'landing' ? 'flex' : 'none';
+    document.getElementById('resident').classList.toggle('active', id === 'resident');
+    document.getElementById('admin').classList.toggle('active', id === 'admin');
+    window.scrollTo(0, 0);
+  }
+
+  // Resident tabs
+  function showTab(tabId, btn) {
+    document.querySelectorAll('#resident .tab-pane').forEach(p => p.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    if (btn) {
+      document.querySelectorAll('#resident .tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  }
+
+  // Admin tabs
+  function showAdminTab(tabId, btn) {
+    document.querySelectorAll('#admin .tab-pane').forEach(p => p.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    document.querySelectorAll('#admin .tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // QR
+  function generateQR() {
+    const grid = document.getElementById('qr-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    for (let i = 0; i < 64; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'qr-dot';
+      dot.style.opacity = Math.random() > 0.4 ? '1' : '0';
+      grid.appendChild(dot);
+    }
+  }
+
+  function openQR() {
+    document.getElementById('qr-modal').classList.add('open');
+    generateQR();
+    updatePreview();
+  }
+
+  function closeQR() {
+    document.getElementById('qr-modal').classList.remove('open');
+  }
+
+  function selectType(el, name, rate) {
+    document.querySelectorAll('.deposit-type').forEach(d => d.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedRate = rate;
+    selectedTypeName = name;
+    updatePreview();
+  }
+
+  function changeWeight(delta) {
+    depositWeight = Math.max(1, Math.min(50, depositWeight + delta));
+    document.getElementById('weight-display').textContent = depositWeight;
+    updatePreview();
+  }
+
+  function updatePreview() {
+    const pts = depositWeight * selectedRate;
+    document.getElementById('points-preview').innerHTML =
+      `🌿 This deposit earns you <strong>${pts} EcoPoints</strong>`;
+  }
+
+  function confirmDeposit() {
+    const earned = depositWeight * selectedRate;
+    currentPoints += earned;
+    closeQR();
+
+    // Add to history
+    const list = document.getElementById('history-list');
+    const newItem = document.createElement('div');
+    newItem.className = 'history-item';
+    newItem.style.border = '1px solid var(--green-fresh)';
+    newItem.innerHTML = `
+      <div class="history-icon earn">♻️</div>
+      <div class="history-text">
+        <div class="history-title">${selectedTypeName} — ${depositWeight} kg</div>
+        <div class="history-date">Just now · Hub scan</div>
+      </div>
+      <div class="history-pts earn">+${earned} pts</div>
+    `;
+    list.insertBefore(newItem, list.firstChild);
+
+    // Update display
+    document.getElementById('user-points').textContent = currentPoints.toLocaleString();
+    showToast(`✅ +${earned} EcoPoints added! Total: ${currentPoints.toLocaleString()} pts`);
+    setTimeout(() => newItem.style.border = '1px solid var(--grey-soft)', 2000);
+  }
+
+  function redeemReward(name, cost) {
+    if (currentPoints < cost) {
+      showToast(`❌ Not enough points. You need ${cost} pts.`);
+      return;
+    }
+    currentPoints -= cost;
+    document.getElementById('user-points').textContent = currentPoints.toLocaleString();
+    showToast(`🎁 Redeemed: ${name}! −${cost} pts`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+</script>
+</body>
+</html>
